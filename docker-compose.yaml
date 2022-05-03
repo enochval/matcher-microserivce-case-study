@@ -2,35 +2,20 @@ version: "3.8"
 services:
   matcher_app:
     container_name: matcher_app
+    restart: unless-stopped
     build:
       context: .
       dockerfile: ./Dockerfile
     env_file:
       - .env
-    expose:
-      - 9000
-    volumes:
-      - .:/usr/src/app
-      - ./public:/usr/src/app/public
-    depends_on:
-      - matcher_db
-    networks:
-      - app_network
-
-  matcher_nginx:
-    container_name: matcher_nginx
-    build:
-      context: .
-      dockerfile: ./docker/nginx/Dockerfile
-    volumes:
-      - ./public:/usr/src/app/public
     ports:
       - 8000:80
+    tty: true
+    volumes:
+      - .:/var/www
+      - ./public:/var/www/public
     depends_on:
-      - matcher_app
-    environment:
-      NGINX_FPM_HOST: matcher_app
-      NGINX_ROOT: /usr/src/app/public
+      - matcher_db
     networks:
       - app_network
 

@@ -17,6 +17,9 @@ RUN curl -sL https://deb.nodesource.com/setup_14.x | bash
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        build-essential \
+        openssl \
+        nginx \
         libz-dev \
         libpq-dev \
         libjpeg-dev \
@@ -42,18 +45,24 @@ RUN apt-get update \
     && docker-php-ext-enable redis \
     && rm -rf /var/lib/apt/lists/*;
 
-COPY ./docker/php/laravel.ini /usr/local/etc/php/conf.d/laravel.ini
+COPY ./docker/php/laravel.ini /etc/php/conf.d/laravel.ini
 
-COPY . /usr/src/app
+COPY ./docker/nginx/nginx.conf /etc/nginx/nginx.conf
 
-RUN chmod +rwx /usr/src/app
+COPY . /var/www
 
-RUN chmod -R 777 /usr/src/app
+RUN chmod +rwx /var/www
 
-RUN composer install --working-dir="/usr/src/app"
+RUN chmod -R 777 /var/www
 
-RUN composer dump-autoload --working-dir="/usr/src/app"
+RUN composer install --working-dir="/var/www"
 
-WORKDIR /usr/src/app
+RUN composer dump-autoload --working-dir="/var/www"
 
-RUN chown -R www-data:www-data .
+WORKDIR /var/www
+
+EXPOSE 80
+
+RUN ["chmod", "+x", "./docker/php/deploy_scripts.sh"]
+
+CMD [ "sh", "./docker/php/deploy_scripts.sh" ]
