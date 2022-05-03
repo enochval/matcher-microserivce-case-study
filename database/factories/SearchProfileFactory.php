@@ -47,7 +47,7 @@ class SearchProfileFactory extends Factory
             $field_range = array_values($field_range);
         }
         return array_map(function ($field_value) {
-            return is_null($field_value) ? null : strval($field_value);
+            return is_null($field_value) ? null : (is_bool($field_value) ? $field_value : strval($field_value));
         }, $field_range);
     }
 }

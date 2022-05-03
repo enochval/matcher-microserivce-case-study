@@ -9,14 +9,16 @@ class SearchProfile extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     public function setSearchFieldsAttribute($value)
     {
         $this->attributes['search_fields'] = json_encode($value);
     }
 
-    public function getSearchFieldsAttribute()
+    public function getSearchFieldsAttribute($value)
     {
-        return json_decode($this->search_fields, true);
+        return json_decode($value, true);
     }
 
     public function setReturnPotentialAttribute($value)
@@ -24,8 +26,8 @@ class SearchProfile extends Model
         $this->attributes['return_potential'] = json_encode($value);
     }
 
-    public function getReturnPotentialAttribute()
+    public function getReturnPotentialAttribute($value)
     {
-        return json_decode($this->return_potential, true);
+        return json_decode($value, true);
     }
 }

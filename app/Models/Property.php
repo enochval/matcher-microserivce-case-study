@@ -9,13 +9,15 @@ class Property extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     public function setFieldsAttribute($value)
     {
         $this->attributes['fields'] = json_encode($value);
     }
 
-    public function getFieldsAttribute()
+    public function getFieldsAttribute($value)
     {
-        return json_decode($this->fields, true);
+        return json_decode($value, true);
     }
 }
