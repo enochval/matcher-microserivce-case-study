@@ -1,0 +1,21 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Property extends Model
+{
+    use HasFactory;
+
+    public function setFieldsAttribute($value)
+    {
+        $this->attributes['fields'] = json_encode($value);
+    }
+
+    public function getFieldsAttribute()
+    {
+        return json_decode($this->fields, true);
+    }
+}
