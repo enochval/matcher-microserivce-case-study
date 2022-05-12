@@ -19,3 +19,11 @@
 
 
 - Goto ``http://localhost:8000/api/match/1``
+
+
+## Testing
+
+- Run ``docker-compose exec matcher_app sh``
+
+
+- Run ``php artisan test``

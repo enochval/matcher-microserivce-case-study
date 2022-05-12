@@ -16,11 +16,14 @@ class MatcherController extends Controller
     }
 
     /**
-     * @param Property $property
+     * @param Property|null $property
      * @return JsonResource
      */
-    public function matchPropertyToSearchProfiles(Property $property): JsonResource
+    public function matchPropertyToSearchProfiles(?Property $property): ?JsonResource
     {
+        if (!$property) {
+            return null;
+        }
         // get matched search profiles
         $matched_search_profiles = $this->searchProfileMatches($property->fields);
 

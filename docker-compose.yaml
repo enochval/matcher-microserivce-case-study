@@ -16,6 +16,7 @@ services:
       - ./public:/var/www/public
     depends_on:
       - matcher_db
+      - matcher_db_unit
     networks:
       - app_network
 
@@ -29,6 +30,20 @@ services:
       - 3308:3306
     environment:
       MYSQL_DATABASE: matcher.test
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    networks:
+      - app_network
+
+  matcher_db_unit:
+    container_name: matcher_db_unit
+    image: mysql:8.0.20
+    restart: always
+    ports:
+      - 3309:3306
+    environment:
+      MYSQL_DATABASE: matcher.unit
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: root
       MYSQL_PASSWORD: root
